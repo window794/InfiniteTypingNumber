@@ -39,6 +39,14 @@
   --card-shadow-hover: 0 4px 16px rgba(0, 0, 0, 0.1);
   --radius: 4px;
   --transition: 0.2s ease;
+
+  /* ▼追加：地域名の可変サイズ用（script.jsから --area-scale を更新して使う） */
+  --area-scale: 1;
+  /* 1.0〜0.55くらいを想定 */
+  --area-font-base: 1.05rem;
+  /* 地域名の基準フォントサイズ */
+  --area-font-min: 0.72rem;
+  /* 地域名の最小フォントサイズ */
 }
 
 /* ===== Reset & Base ===== */
@@ -125,7 +133,7 @@ body {
   flex-direction: column;
   align-items: center;
   gap: 2.5rem;
-  max-width: 680px;
+  max-width: 920px;
   width: 100%;
 }
 
@@ -194,46 +202,46 @@ body {
 .mode-card-header {
   background: var(--red);
   color: var(--white);
-  padding: 0.8rem 1.2rem;
+  padding: 0.7rem 1rem;
   display: flex;
   align-items: center;
-  gap: 0.8rem;
+  gap: 0.7rem;
 }
 
 .mode-badge {
   font-family: 'Montserrat', sans-serif;
   font-weight: 300;
-  font-size: 0.65rem;
+  font-size: 0.6rem;
   letter-spacing: 0.15em;
   opacity: 0.85;
   white-space: nowrap;
 }
 
 .mode-title {
-  font-size: 0.95rem;
+  font-size: 0.9rem;
   font-weight: 400;
   line-height: 1.4;
 }
 
 .mode-card-body {
-  padding: 1.4rem 1.2rem;
+  padding: 1.2rem 1rem;
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
-  gap: 1rem;
+  gap: 0.9rem;
 }
 
 .mode-desc {
-  font-size: 0.82rem;
+  font-size: 0.8rem;
   color: var(--text-secondary);
   line-height: 1.75;
 }
 
-/* Start Button — red outline style */
+/* Start Button */
 .btn-start {
-  padding: 0.55rem 2.2rem;
-  font-size: 0.85rem;
+  padding: 0.5rem 1.8rem;
+  font-size: 0.82rem;
   color: var(--red);
   background: var(--white);
   border: 2px solid var(--red);
@@ -276,7 +284,6 @@ body {
   background: var(--white);
 }
 
-/* Typing top bar — thin red strip with back button */
 .typing-top-bar {
   background: var(--red);
   padding: 0.55rem 1.2rem;
@@ -354,8 +361,8 @@ body {
 .now-value {
   font-family: 'Lato', monospace;
   font-weight: 300;
-  font-size: clamp(2.5rem, 10vw, 4.2rem);
-  letter-spacing: 0.08em;
+  font-size: clamp(2.2rem, 9vw, 3.8rem);
+  letter-spacing: 0.06em;
   color: var(--text-primary);
   line-height: 1.2;
   min-height: 1.2em;
@@ -374,8 +381,8 @@ body {
 .next-value {
   font-family: 'Lato', monospace;
   font-weight: 300;
-  font-size: clamp(1.1rem, 4vw, 1.6rem);
-  letter-spacing: 0.08em;
+  font-size: clamp(1rem, 3.5vw, 1.5rem);
+  letter-spacing: 0.06em;
   color: var(--text-tertiary);
   line-height: 1.2;
   min-height: 1.2em;
@@ -397,7 +404,7 @@ body {
   left: 0;
   z-index: 2;
   cursor: text;
-  font-size: 16px; /* Prevent iOS zoom */
+  font-size: 16px;
 }
 
 .input-display {
@@ -409,7 +416,7 @@ body {
   font-family: 'Lato', monospace;
   font-weight: 300;
   font-size: clamp(1.2rem, 4vw, 1.5rem);
-  letter-spacing: 0.12em;
+  letter-spacing: 0.1em;
   color: var(--text-primary);
   min-height: 3.2rem;
   transition: border-color var(--transition);
@@ -417,7 +424,7 @@ body {
   word-break: break-all;
 }
 
-.typing-input:focus ~ .input-display {
+.typing-input:focus~.input-display {
   border-color: var(--red);
 }
 
@@ -476,6 +483,7 @@ body {
     opacity: 0;
     transform: translateY(3px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -487,8 +495,45 @@ body {
   display: none !important;
 }
 
+/* ========================================
+   ▼追加：地域名が長いときの可変フォント（電話番号表示を守る）
+   - script.js が :root の --area-scale を更新する想定
+   - ★ 修正：#area-note / .area-note を対象に含める
+   ======================================== */
+
+/* 1) 地域名表示の共通スタイル（最小限） */
+#area-note,
+.area-note,
+#area-name,
+#areaName,
+.area-name,
+.areaName,
+.note,
+#note {
+  display: block;
+  width: 100%;
+  max-width: 560px;
+  margin: 0.55rem auto 0;
+  padding: 0 0.4rem;
+
+  text-align: center;
+  letter-spacing: 0.04em;
+  color: var(--text-secondary);
+
+  font-size: clamp(var(--area-font-min),
+      calc(var(--area-font-base) * var(--area-scale)),
+      var(--area-font-base));
+
+  line-height: 1.25;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+
+  transform-origin: center top;
+}
+
 /* ===== Responsive ===== */
-@media (max-width: 600px) {
+@media (max-width: 720px) {
   #screen-select {
     padding: 2.5rem 1rem 4rem;
   }
@@ -503,11 +548,11 @@ body {
   }
 
   .mode-card-header {
-    padding: 0.7rem 1rem;
+    padding: 0.65rem 1rem;
   }
 
   .mode-card-body {
-    padding: 1.2rem 1rem;
+    padding: 1rem;
   }
 
   .typing-layout {

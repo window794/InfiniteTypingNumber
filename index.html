@@ -10,10 +10,8 @@
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-
   <!-- ===== MODE SELECT SCREEN ===== -->
   <div id="screen-select" class="screen active">
-
     <div class="top-bar"></div>
 
     <div class="select-content">
@@ -45,6 +43,17 @@
             <button class="btn-start biz-udpgothic-regular" data-mode="birthday">はじめる</button>
           </div>
         </div>
+
+        <div class="mode-card">
+          <div class="mode-card-header biz-udpgothic-regular">
+            <span class="mode-badge">MODE 3</span>
+            <h2 class="mode-title">電話番号タイピング</h2>
+          </div>
+          <div class="mode-card-body">
+            <p class="mode-desc biz-udpgothic-regular">実在する市外局番＋ランダム番号<br>ハイフン区切りで自然な入力感</p>
+            <button class="btn-start biz-udpgothic-regular" data-mode="phone">はじめる</button>
+          </div>
+        </div>
       </div>
 
       <footer class="select-footer biz-udpgothic-regular">
@@ -67,26 +76,22 @@
     <div class="typing-layout">
       <div class="now-area">
         <span class="area-label">NOW</span>
+
+        <!-- ▼追加：電話番号モードで「市外局番の地域名」を出す（長文は自動縮小させる） -->
+        <div id="area-note" class="area-note biz-udpgothic-regular hidden" aria-live="polite"></div>
+
         <div id="now-value" class="now-value"></div>
       </div>
 
-      <div id="next-area" class="next-area hidden">
+      <div id="next-area" class="next-area">
         <span class="area-label area-label-sub">NEXT</span>
         <div id="next-value" class="next-value"></div>
       </div>
 
       <div class="input-wrapper">
-        <input
-          type="text"
-          id="typing-input"
-          inputmode="numeric"
-          pattern="[0-9]*"
-          autocomplete="off"
-          autocorrect="off"
-          autocapitalize="off"
-          spellcheck="false"
-          class="typing-input"
-        >
+        <input type="text" id="typing-input" inputmode="numeric" pattern="[0-9]*"
+               autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"
+               class="typing-input">
         <div id="input-display" class="input-display"></div>
       </div>
 
